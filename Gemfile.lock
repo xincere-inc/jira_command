@@ -10,13 +10,18 @@ GEM
     ast (2.4.1)
     coderay (1.1.3)
     diff-lcs (1.4.4)
+    equatable (0.6.1)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     method_source (1.0.0)
     multipart-post (2.1.1)
+    necromancer (0.5.1)
     parallel (1.19.2)
     parser (2.7.1.4)
       ast (~> 2.4.1)
+    pastel (0.7.4)
+      equatable (~> 0.6)
+      tty-color (~> 0.5)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -52,7 +57,19 @@ GEM
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     thor (1.0.1)
+    tty-color (0.5.1)
+    tty-cursor (0.7.1)
+    tty-prompt (0.21.0)
+      necromancer (~> 0.5.0)
+      pastel (~> 0.7.0)
+      tty-reader (~> 0.7.0)
+    tty-reader (0.7.0)
+      tty-cursor (~> 0.7)
+      tty-screen (~> 0.7)
+      wisper (~> 2.0.0)
+    tty-screen (0.8.1)
     unicode-display_width (1.7.0)
+    wisper (2.0.1)
 
 PLATFORMS
   ruby
@@ -65,6 +82,7 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubocop
   terminal-table
+  tty-prompt
 
 BUNDLED WITH
    2.1.4
