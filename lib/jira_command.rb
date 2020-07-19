@@ -1,4 +1,4 @@
-require "jira_command/version"
+require 'jira_command/version'
 
 module JiraCommand
   class Error < StandardError; end
