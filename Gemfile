@@ -6,5 +6,8 @@ gemspec
 gem 'rake', '~> 12.0'
 gem 'rspec', '~> 3.0'
 
+gem 'faraday'
 gem 'pry'
 gem 'rubocop'
+gem 'terminal-table'
+gem 'tty-prompt'

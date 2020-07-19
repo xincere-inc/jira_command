@@ -22,7 +22,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```bash
+$ jira_command config create
+> Please input your site url: https://<your-domain>.atlassian.net/
+> Please input your registered email address: <example@xincere.jp>
+> Please input your token: <token got in jira>
+
+$ bundle exec exe/jira_command help
+Commands:
+  jira_command assign          # set or unset assign in issue
+  jira_command config          # create or clear configuration
+  jira_command help [COMMAND]  # Describe available commands or one specific command
+  jira_command list            # list up issues
+  jira_command status          # show all status in project
+  jira_command transition      # transition issues
+  jira_command user            # list all users
+```
 
 ## Development
 
@@ -33,7 +48,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jira_command. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/jira_command/blob/master/CODE_OF_CONDUCT.md).
-
 
 ## License
 
