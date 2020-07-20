@@ -12,8 +12,8 @@ module JiraCommand
     register(JiraCommand::Command::List, 'list', 'list', 'list up issues')
     register(JiraCommand::Command::Config, 'config', 'config', 'create or clear configuration')
     register(JiraCommand::Command::User, 'user', 'user', 'list all users')
-    register(JiraCommand::Command::Assign, 'assign', 'assign', 'assign features')
-    register(JiraCommand::Command::Status, 'status', 'status', 'assign features')
+    register(JiraCommand::Command::Assign, 'assign', 'assign', 'set or unset assign in issue')
+    register(JiraCommand::Command::Status, 'status', 'status', 'show all status in project')
     register(JiraCommand::Command::Transition, 'transition', 'transition', 'transition issues')
   end
 end
