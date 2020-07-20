@@ -22,6 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
+You need to get token in [JIRA](https://id.atlassian.com/manage-profile/security).
+
 ```bash
 $ jira_command config create
 > Please input your site url: https://<your-domain>.atlassian.net/
@@ -37,6 +39,50 @@ Commands:
   jira_command status          # show all status in project
   jira_command transition      # transition issues
   jira_command user            # list all users
+```
+
+<b>the most useful commands</b>
+
+```
+$ jira_command list help my
+Usage:
+  jira_command list my
+
+Options:
+  c, [--current=CURRENT]
+  u, [--unresolved=UNRESOLVED]
+
+list your issues
+
+
+$ jira_command list help my
+Usage:
+  jira_command list my
+
+Options:
+  c, [--current=CURRENT]
+  u, [--unresolved=UNRESOLVED]
+
+list your issues
+
+$ jira_command transition help issue
+Usage:
+  jira_command transition issue
+
+Options:
+  c, [--current=CURRENT]
+  m, [--mine=MINE]
+
+transite issue status
+
+$ jira_command assign help assign
+Usage:
+  jira_command assign assign
+
+Options:
+  i, [--issue=ISSUE]
+
+assign to user
 ```
 
 ## Development
