@@ -2,10 +2,11 @@ require 'jira_command'
 require 'thor'
 require 'optparse'
 require 'pry'
-require_relative '../jira/config'
+require_relative '../config'
 require_relative '../jira/list'
 require 'tty-prompt'
 require 'base64'
+require 'terminal-table'
 
 module JiraCommand
   module Command
@@ -14,7 +15,7 @@ module JiraCommand
 
       desc 'all', 'list issues'
       def all
-        config = JiraCommand::Jira::Config.new.read
+        config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary' })
         show_in_console(config['jira_url'], issues_list['issues'])
@@ -22,7 +23,7 @@ module JiraCommand
 
       desc 'unresolved', 'list issues'
       def unresolved
-        config = JiraCommand::Jira::Config.new.read
+        config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
                                   jql: 'status not in (resolved)' })
@@ -38,9 +39,7 @@ module JiraCommand
         jql << 'sprint in openSprints()' unless options['current'].nil?
         jql << 'status not in (resolved)' unless options['unresolved'].nil?
 
-        binding.pry
-
-        config = JiraCommand::Jira::Config.new.read
+        config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
                                   jql: jql.join('&') })

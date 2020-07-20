@@ -1,18 +1,18 @@
 require 'thor'
 require 'optparse'
 require 'pry'
-require_relative '../jira/config'
+require_relative '../config'
 require_relative '../jira/user'
 
 module JiraCommand
   module Command
     class User < Thor
-      default_command :all
+      default_command :project
 
-      desc 'all', 'list issues'
+      desc 'project', 'list issues in specified project'
       option 'project', aliases: 'p', required: true
-      def all
-        config = JiraCommand::Jira::Config.new.read
+      def project
+        config = JiraCommand::Config.new.read
 
         user_api = JiraCommand::Jira::User.new(config)
         user_api.show_assignable(project: options['project'])

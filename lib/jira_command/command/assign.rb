@@ -1,17 +1,16 @@
 require 'thor'
 require 'optparse'
-require_relative '../jira/config'
+require 'tty-prompt'
+require_relative '../config'
 require_relative '../jira/assign'
 
 module JiraCommand
   module Command
     class Assign < Thor
-      default_command :assign
-
       desc 'assign', 'assign to user'
       option 'issue', aliases: 'i', required: false
       def assign
-        config = JiraCommand::Jira::Config.new.read
+        config = JiraCommand::Config.new.read
 
         user_api = JiraCommand::Jira::User.new(config)
         user_list = user_api.all_list(project: options['issue'].split('-').first)
@@ -31,7 +30,7 @@ module JiraCommand
       desc 'clear', 'set to unassigned'
       option 'issue', aliases: 'i', required: false
       def clear
-        config = JiraCommand::Jira::Config.new.read
+        config = JiraCommand::Config.new.read
 
         assign = JiraCommand::Jira::Assign.new(config)
         assign.unassigne(issue_key: options['issue'])

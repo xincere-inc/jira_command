@@ -7,23 +7,11 @@ require 'fileutils'
 require 'json'
 require 'faraday'
 require 'json'
+require_relative 'base'
 
 module JiraCommand
   module Jira
-    class Assign
-      attr_writer :config, :conn
-
-      def initialize(config)
-        @config = config
-        @conn = Faraday.new(url: config['jira_url']) do |faraday|
-          faraday.request :url_encoded
-          faraday.headers['Accept'] = 'application/json'
-          faraday.headers['Content-Type'] = 'application/json'
-          faraday.headers['Authorization'] = 'Basic ' + config['header_token']
-          faraday.adapter Faraday.default_adapter
-        end
-      end
-
+    class Assign < JiraCommand::Jira::Base
       def execute(issue_key:, assignee:)
         request_url = "rest/api/3/issue/#{issue_key}/assignee"
         @conn.put do |req|
