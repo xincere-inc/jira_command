@@ -6,13 +6,13 @@ Gem::Specification.new do |spec|
   spec.authors       = ['shengbo.xu']
   spec.email         = ['shengbo.xu@xincere.jp']
 
-  spec.summary       = 'jira cli tool'
+  spec.summary       = 'jira cli'
   spec.description   = 'jira cli tool'
   spec.homepage      = 'https://github.com/xincere-inc/jira_command'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')
 
-  spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+  # spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/xincere-inc/jira_command'
