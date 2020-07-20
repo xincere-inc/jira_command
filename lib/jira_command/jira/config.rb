@@ -25,6 +25,10 @@ module JiraCommand
           f.puts hash_params.to_json
         end
       end
+
+      def clear
+        FileUtils.rm(CONFIG_PATH_CLASS)
+      end
     end
   end
 end
