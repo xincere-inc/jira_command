@@ -6,6 +6,7 @@ require_relative 'command/user'
 require_relative 'command/assign'
 require_relative 'command/status'
 require_relative 'command/transition'
+require_relative 'command/issue'
 
 module JiraCommand
   class CLI < Thor
@@ -15,5 +16,6 @@ module JiraCommand
     register(JiraCommand::Command::Assign, 'assign', 'assign', 'set or unset assign in issue')
     register(JiraCommand::Command::Status, 'status', 'status', 'show all status in project')
     register(JiraCommand::Command::Transition, 'transition', 'transition', 'transition issues')
+    register(JiraCommand::Command::Issue, 'issue', 'issue', 'create a issue')
   end
 end

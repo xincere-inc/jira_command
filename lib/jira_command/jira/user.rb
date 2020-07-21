@@ -24,7 +24,7 @@ module JiraCommand
       end
 
       def show_assignable(project:)
-        puts all_list(project: project).map { |item| item[:name] }
+        puts all_list(project: project).map(:name)
       end
     end
   end

@@ -7,9 +7,9 @@ require_relative '../jira/assign'
 module JiraCommand
   module Command
     class Assign < Thor
-      desc 'assign', 'assign to user'
+      desc 'exec', 'assign to user'
       option 'issue', aliases: 'i', required: false
-      def assign
+      def exec
         config = JiraCommand::Config.new.read
 
         user_api = JiraCommand::Jira::User.new(config)

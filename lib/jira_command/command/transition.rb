@@ -46,7 +46,9 @@ module JiraCommand
 
         issue_key = prompt.select('Which issue do you want to transite?') do |menu|
           issues_list['issues'].map do |i|
-            menu.choice name: "#{i['fields']['assignee'].nil? ? 'not assigned' : i['fields']['assignee']['displayName']}: #{i['fields']['summary']}(#{i['fields']['status']['name']})", value: i['key']
+            assignee = i['fields']['assignee']
+            menu.choice(name: "#{assignee.nil? ? 'not assigned' : assignee['displayName']}: #{i['fields']['summary']}(#{i['fields']['status']['name']})",
+                        value: i['key'])
           end
         end
 

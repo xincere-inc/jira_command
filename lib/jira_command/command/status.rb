@@ -14,7 +14,7 @@ module JiraCommand
         jira = JiraCommand::Jira::Status.new(config)
         res = jira.list(project: options['project'])
 
-        puts res.map { |item| item[:name] }
+        puts res.map(:name)
       end
     end
   end

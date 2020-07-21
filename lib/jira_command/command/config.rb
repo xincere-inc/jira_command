@@ -1,7 +1,7 @@
 require 'jira_command'
 require 'thor'
 require 'optparse'
-require 'pry'
+require 'tty-prompt'
 require_relative '../config'
 require 'base64'
 

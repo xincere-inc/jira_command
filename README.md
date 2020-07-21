@@ -75,9 +75,9 @@ Options:
 
 transite issue status
 
-$ jira_command assign help assign
+$ jira_command assign help exec
 Usage:
-  jira_command assign assign
+  jira_command assign exec
 
 Options:
   i, [--issue=ISSUE]

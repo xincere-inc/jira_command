@@ -9,7 +9,7 @@ module JiraCommand
     class Status < JiraCommand::Jira::Base
       BASE_PATH = 'rest/api/2/status'.freeze
 
-      def list(project:)
+      def list
         res = @conn.get(BASE_PATH)
 
         res = JSON.parse(res.body)
@@ -20,7 +20,7 @@ module JiraCommand
       def transite(issue_key:, target_status_id:)
         request_url = "rest/api/2/issue/#{issue_key}/transitions"
 
-        res = @conn.post do |req|
+        @conn.post do |req|
           req.url request_url
           req.body = { transition: { id: target_status_id } }.to_json
         end
