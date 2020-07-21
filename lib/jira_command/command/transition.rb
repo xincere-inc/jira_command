@@ -60,7 +60,8 @@ module JiraCommand
             menu.choice name: transition[:name], value: transition[:id]
           end
         end
-        jira.transite(issue_key: options['issue'], target_transition_id: target_transition_id)
+
+        jira.transite(issue_key: issue_key, target_transition_id: target_transition_id)
       end
     end
   end
