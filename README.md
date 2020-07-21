@@ -30,20 +30,55 @@ $ jira_command config create
 > Please input your registered email address: <example@xincere.jp>
 > Please input your token: <token got in jira>
 
-$ bundle exec exe/jira_command help
+$ jira_command help
 Commands:
   jira_command assign          # set or unset assign in issue
   jira_command config          # create or clear configuration
   jira_command help [COMMAND]  # Describe available commands or one specific command
+  jira_command issue           # create a issue
   jira_command list            # list up issues
   jira_command status          # show all status in project
   jira_command transition      # transition issues
   jira_command user            # list all users
 ```
 
+<b>if you want to cache items in your local to reduce api call, you can refer the following commands.</b>
+
+```bash
+$ jira_command config help
+Commands:
+  jira_command config clear                              # clear config file
+  jira_command config create                             # create config file
+  jira_command config help [COMMAND]                     # Describe subcommands or one specific subcommand
+  jira_command config update_it                          # update default issue_type in config file
+  jira_command config update_projects                    # update default projects in config file
+  jira_command config update_users p, --project=PROJECT  # update default users in config file
+
+$ jira_command config help update_it
+Usage:
+  jira_command config update_it
+
+update default issue_type in config file
+
+$ bundle exec exe/jira_command config help update_projects
+Usage:
+  jira_command config update_projects
+
+update default projects in config file
+
+$ bundle exec exe/jira_command config help update_users
+Usage:
+  jira_command config update_users p, --project=PROJECT
+
+Options:
+  p, --project=PROJECT
+
+update default users in config file
+```
+
 <b>the most useful commands</b>
 
-```
+```bash
 $ jira_command list help my
 Usage:
   jira_command list my
@@ -73,14 +108,15 @@ Options:
   c, [--current=CURRENT]
   m, [--mine=MINE]
 
-transite issue status
+transit issue status
 
 $ jira_command assign help exec
 Usage:
-  jira_command assign exec
+  jira_command assign exec i, --issue=ISSUE
 
 Options:
-  i, [--issue=ISSUE]
+  i, --issue=ISSUE
+  ru, [--refresh-user=REFRESH-USER]
 
 assign to user
 ```

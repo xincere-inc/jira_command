@@ -8,40 +8,56 @@ module JiraCommand
   module Command
     class Issue < Thor
       desc 'create', 'create new issue'
+      option 'refresh-project', aliases: 'rp', required: false
+      option 'refresh-issue-type', aliases: 'rit', required: false
+      option 'refresh-user', aliases: 'ru', required: false
       def create
         config = JiraCommand::Config.new.read
-        jira_issue_type = JiraCommand::Jira::IssueType.new(config)
-        issue_types = jira_issue_type.list
+
+        issue_types = if options['refresh-issue-type'].nil?
+                        config['issue_types']
+                      else
+                        jira_issue_type = JiraCommand::Jira::IssueType.new(config)
+                        jira_issue_type.list
+                      end
 
         prompt = TTY::Prompt.new
 
         issue_type = prompt.select('Which issue type do you want to create?') do |menu|
           issue_types.each do |item|
-            menu.choice name: item[:name], value: item[:id]
+            menu.choice name: item['name'], value: item['id']
           end
         end
 
-        jira_project = JiraCommand::Jira::Project.new(config)
-        projects = jira_project.list
+        projects = if options['refresh-project'].nil?
+                     config['projects']
+                   else
+                     jira_project = JiraCommand::Jira::Project.new(config)
+                     jira_project.list
+                   end
 
         project = prompt.select('Which project does the issue belong to?') do |menu|
           projects.each do |item|
-            menu.choice name: item[:name], value: { id: item[:id], key: item[:key] }
+            menu.choice name: item['name'], value: { id: item['id'], key: item['key'] }
           end
         end
 
-        user_api = JiraCommand::Jira::User.new(config)
-        user_list = user_api.all_list(project: project[:key])
+        user_list = if options['refresh-user'].nil?
+                      config['users']
+                    else
+                      user_api = JiraCommand::Jira::User.new(config)
+                      user_api.all_list(project: project[:key])
+                    end
 
         assignee = prompt.select('Who do you want to assign?') do |menu|
           user_list.each do |user|
-            menu.choice name: user[:name], value: user[:account_id]
+            menu.choice name: user['name'], value: user['account_id']
           end
         end
 
         reporter = prompt.select('Who are you?') do |menu|
           user_list.each do |user|
-            menu.choice name: user[:name], value: user[:account_id]
+            menu.choice name: user['name'], value: user['account_id']
           end
         end
 

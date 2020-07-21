@@ -8,12 +8,20 @@ module JiraCommand
   module Command
     class Assign < Thor
       desc 'exec', 'assign to user'
-      option 'issue', aliases: 'i', required: false
+      option 'issue', aliases: 'i', required: true
+      option 'refresh-user', aliases: 'ru', required: false
       def exec
         config = JiraCommand::Config.new.read
 
         user_api = JiraCommand::Jira::User.new(config)
         user_list = user_api.all_list(project: options['issue'].split('-').first)
+
+        user_list = if options['refresh-user'].nil?
+                      config['users']
+                    else
+                      user_api = JiraCommand::Jira::User.new(config)
+                      user_api.all_list(project: project[:key])
+                    end
 
         prompt = TTY::Prompt.new
 

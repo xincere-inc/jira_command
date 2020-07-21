@@ -9,7 +9,7 @@ module JiraCommand
     class Transition < Thor
       default_command :exec
 
-      desc 'exec', 'transite issue status'
+      desc 'exec', 'transit issue status'
       option 'issue', aliases: 'i', required: true
       def exec
         config = JiraCommand::Config.new.read
