@@ -1,8 +1,10 @@
 require 'jira_command'
 require_relative '../config'
-require_relative '../jira/issuetype'
-require_relative '../jira/project'
+require_relative '../prompt/base'
+require_relative '../jira/epic'
+require_relative '../jira/board'
 require_relative '../jira/issue'
+require_relative '../jira/sprint'
 
 module JiraCommand
   module Command
@@ -15,54 +17,30 @@ module JiraCommand
       def create
         config = JiraCommand::Config.new.read
 
-        issue_types = if options['refresh-issue-type'].nil?
-                        config[:issue_types]
-                      else
-                        jira_issue_type = JiraCommand::Jira::IssueType.new(config)
-                        jira_issue_type.list
-                      end
+        prompt_base = JiraCommand::Prompt::Base.new
+
+        issue_type = prompt_base.select_issue_type(
+          message: 'Which issue type do you want to create?',
+          refresh: !options['refresh-issue-type'].nil?
+        )
+
+        project = prompt_base.select_project(
+          message: 'Which project does the issue belong to?',
+          refresh: !options['refresh-project'].nil?
+        )
+
+        assignee = prompt_base.select_user(
+          message: 'Who do you want to assign?',
+          refresh: !options['refresh-user'].nil?,
+          additional: [{ name: 'unassigned', value: nil }]
+        )
+
+        reporter = prompt_base.select_user(
+          message: 'Who are you?',
+          refresh: !options['refresh-user'].nil?
+        )
 
         prompt = TTY::Prompt.new
-
-        issue_type = prompt.select('Which issue type do you want to create?') do |menu|
-          issue_types.each do |item|
-            menu.choice name: item[:name], value: { id: item[:id], name: item[:name] }
-          end
-        end
-
-        projects = if options['refresh-project'].nil?
-                     config[:projects]
-                   else
-                     jira_project = JiraCommand::Jira::Project.new(config)
-                     jira_project.list
-                   end
-
-        project = prompt.select('Which project does the issue belong to?') do |menu|
-          projects.each do |item|
-            menu.choice name: item[:name], value: { id: item[:id], key: item[:key] }
-          end
-        end
-
-        user_list = if options['refresh-user'].nil?
-                      config[:users]
-                    else
-                      user_api = JiraCommand::Jira::User.new(config)
-                      user_api.all_list(project: project[:key])
-                    end
-
-        assignee = prompt.select('Who do you want to assign?') do |menu|
-          menu.choice name: 'unassigned', value: nil
-          user_list.each do |user|
-            menu.choice name: user[:name], value: user[:account_id]
-          end
-        end
-
-        reporter = prompt.select('Who are you?') do |menu|
-          user_list.each do |user|
-            menu.choice name: user[:name], value: user[:account_id]
-          end
-        end
-
         summary = prompt.ask('Please input issue summary: ')
         description = prompt.ask('Please input issue description: ')
 
@@ -100,12 +78,26 @@ module JiraCommand
         end
 
         agile_epic.move_issue(epic_id: epic_id, issue_key: issue_key)
+
+        exit 0 unless prompt.yes?('Do you want to attach to sprint?')
+
+        sprint_id = prompt_base.select_sprint(board_id: target_board[:id])
+        jira_sprint = JiraCommand::Jira::Sprint.new(config)
+        jira_sprint.move_issue(issue_key: issue_key, sprint_id: sprint_id)
+      end
+
+      desc 'comment', 'comment to issue'
+      option 'message', aliases: 'm', required: false
+      def comment(issue_key)
+        config = JiraCommand::Config.new.read
+        jira_comment = JiraCommand::Jira::Issue.new(config)
+
+        jira_comment.comment(issue_key: issue_key, message: options['message'])
       end
 
       desc 'attach_epic', 'attach epic to issue'
-      option 'issue', aliases: 'i', required: true
       option 'refresh-board', aliases: 'b', required: false
-      def attach_epic
+      def attach_epic(issue_key)
         config = JiraCommand::Config.new.read
 
         baord_list = if options['refresh-board'].nil?
@@ -115,7 +107,7 @@ module JiraCommand
                        agile_board.list
                      end
 
-        target_board = baord_list.find { |item| item[:projectKey] == options['issue'].split('-').first }
+        target_board = baord_list.find { |item| item[:projectKey] == issue_key.split('-').first }
 
         agile_epic = JiraCommand::Jira::Epic.new(config)
         epics = agile_epic.list(board_id: target_board[:id])
@@ -127,7 +119,28 @@ module JiraCommand
           end
         end
 
-        agile_epic.move_issue(epic_id: epic_id, issue_key: options['issue'])
+        agile_epic.move_issue(epic_id: epic_id, issue_key: issue_key)
+      end
+
+      desc 'attach_sprint', 'attach epic to issue'
+      option 'refresh-board', aliases: 'b', required: false
+      def attach_sprint(issue_key)
+        config = JiraCommand::Config.new.read
+
+        baord_list = if options['refresh-board'].nil?
+                       config[:boards]
+                     else
+                       agile_board = JiraCommand::Jira::Board.new(config)
+                       agile_board.list
+                     end
+
+        target_board = baord_list.find { |item| item[:projectKey] == issue_key.split('-').first }
+
+        sprint_id = JiraCommand::Prompt::Base.new.select_sprint(board_id: target_board[:id])
+
+        jira_sprint = JiraCommand::Jira::Sprint.new(config)
+
+        jira_sprint.move_issue(issue_key: issue_key, sprint_id: sprint_id)
       end
     end
   end

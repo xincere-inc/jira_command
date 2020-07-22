@@ -7,6 +7,7 @@ require_relative 'command/assign'
 require_relative 'command/status'
 require_relative 'command/transition'
 require_relative 'command/issue'
+require_relative 'command/sprint'
 
 module JiraCommand
   class CLI < Thor
@@ -17,5 +18,11 @@ module JiraCommand
     register(JiraCommand::Command::Status, 'status', 'status', 'show all status in project')
     register(JiraCommand::Command::Transition, 'transition', 'transition', 'transition issues')
     register(JiraCommand::Command::Issue, 'issue', 'issue', 'create a issue')
+    register(JiraCommand::Command::Sprint, 'sprint', 'sprint', 'sprint related features')
+
+    desc 'version', 'show version'
+    def version
+      puts 'You are using: ' + JiraCommand::VERSION
+    end
   end
 end
