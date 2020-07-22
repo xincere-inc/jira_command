@@ -30,16 +30,17 @@ $ jira_command config create
 > Please input your registered email address: <example@xincere.jp>
 > Please input your token: <token got in jira>
 
-$ jira_command help
 Commands:
   jira_command assign          # set or unset assign in issue
   jira_command config          # create or clear configuration
   jira_command help [COMMAND]  # Describe available commands or one specific command
   jira_command issue           # create a issue
   jira_command list            # list up issues
+  jira_command sprint          # sprint related features
   jira_command status          # show all status in project
   jira_command transition      # transition issues
   jira_command user            # list all users
+  jira_command version         # show version
 ```
 
 <b>if you want to cache items in your local to reduce api call, you can refer the following commands.</b>

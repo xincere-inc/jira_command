@@ -15,7 +15,7 @@ module JiraCommand
       end
 
       def select_board(message: 'Please select board', refresh: false)
-        baord_list = if refresh
+        baord_list = if @config[:boards].nil? || refresh
                        agile_board = JiraCommand::Jira::Board.new(@config)
                        agile_board.list
                      else
@@ -30,7 +30,7 @@ module JiraCommand
       end
 
       def select_issue_type(message:, refresh: false)
-        issue_types = if refresh
+        issue_types = if @config[:issue_types].nil? || refresh
                         jira_issue_type = JiraCommand::Jira::IssueType.new(@config)
                         jira_issue_type.list
                       else
@@ -45,7 +45,7 @@ module JiraCommand
       end
 
       def select_project(message:, refresh: false)
-        projects = if refresh
+        projects = if @config[:projects].nil? || refresh
                      jira_project = JiraCommand::Jira::Project.new(@config)
                      jira_project.list
                    else
@@ -63,7 +63,7 @@ module JiraCommand
                       project_key: nil,
                       refresh: false,
                       additional: [])
-        user_list = if refresh
+        user_list = if @config[:users].nil? || refresh
                       user_api = JiraCommand::Jira::User.new(@config)
                       user_api.all_list(project: project_key)
                     else

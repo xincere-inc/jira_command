@@ -59,7 +59,7 @@ module JiraCommand
 
         return if issue_type[:name] == 'Epic'
 
-        baord_list = if options['refresh-board'].nil?
+        baord_list = if !config[:boards].nil? && options['refresh-board'].nil?
                        config[:boards]
                      else
                        agile_board = JiraCommand::Jira::Board.new(config)
@@ -100,7 +100,7 @@ module JiraCommand
       def attach_epic(issue_key)
         config = JiraCommand::Config.new.read
 
-        baord_list = if options['refresh-board'].nil?
+        baord_list = if !config[:boards].nil? && options['refresh-board'].nil?
                        config[:boards]
                      else
                        agile_board = JiraCommand::Jira::Board.new(config)
@@ -127,7 +127,7 @@ module JiraCommand
       def attach_sprint(issue_key)
         config = JiraCommand::Config.new.read
 
-        baord_list = if options['refresh-board'].nil?
+        baord_list = if !config[:boards].nil? && options['refresh-board'].nil?
                        config[:boards]
                      else
                        agile_board = JiraCommand::Jira::Board.new(config)
