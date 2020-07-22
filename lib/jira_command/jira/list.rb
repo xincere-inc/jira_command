@@ -16,6 +16,7 @@ module JiraCommand
       def list(query = {})
         request_url = BASE_PATH + URI.encode_www_form(query)
         res = @conn.get(request_url)
+
         JSON.parse(res.body)
       end
     end

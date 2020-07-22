@@ -12,23 +12,19 @@ require 'terminal-table'
 module JiraCommand
   module Command
     class List < Thor
-      default_command :unresolved
+      default_command :all
 
       desc 'all', 'list issues'
+      option 'current', aliases: 'c', required: false
+      option 'unresolved', aliases: 'u', required: false
       def all
+        jql = []
+        jql << 'sprint in openSprints()' unless options['current'].nil?
+        jql << 'status not in (resolved)' unless options['unresolved'].nil?
+
         config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
-        issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary' })
-        show_in_console(config[:jira_url], issues_list['issues'])
-      end
-
-      desc 'unresolved', 'list issues'
-      def unresolved
-        config = JiraCommand::Config.new.read
-        list = JiraCommand::Jira::List.new(config)
-        issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
-                                  jql: 'status not in (resolved)' })
-
+        issues_list = list.list({ jql: jql.join('&') })
         show_in_console(config[:jira_url], issues_list['issues'])
       end
 
@@ -55,7 +51,6 @@ module JiraCommand
 
         jql = ["key in (#{agile_epic.issue_key_without_epic.join(', ')})"]
 
-        config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
 
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
