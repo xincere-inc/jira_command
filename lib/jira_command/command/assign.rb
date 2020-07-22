@@ -9,7 +9,7 @@ module JiraCommand
     class Assign < Thor
       desc 'exec', 'assign to user'
       option 'issue', aliases: 'i', required: true
-      option 'refresh-user', aliases: 'ru', required: false
+      option 'refresh-user', aliases: 'u', required: false
       def exec
         config = JiraCommand::Config.new.read
 
