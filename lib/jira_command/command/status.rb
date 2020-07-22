@@ -7,14 +7,13 @@ module JiraCommand
   module Command
     class Status < Thor
       desc 'project', 'list status in specified project'
-      option 'project', aliases: 'p', required: true
       def project
         config = JiraCommand::Config.new.read
 
         jira = JiraCommand::Jira::Status.new(config)
-        res = jira.list(project: options['project'])
+        res = jira.list
 
-        puts res.map(:name)
+        puts(res.map { |item| item[:name] })
       end
     end
   end

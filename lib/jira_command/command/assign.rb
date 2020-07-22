@@ -17,7 +17,7 @@ module JiraCommand
         user_list = user_api.all_list(project: options['issue'].split('-').first)
 
         user_list = if options['refresh-user'].nil?
-                      config['users']
+                      config[:users]
                     else
                       user_api = JiraCommand::Jira::User.new(config)
                       user_api.all_list(project: project[:key])

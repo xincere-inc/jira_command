@@ -7,8 +7,6 @@ require_relative '../jira/transition'
 module JiraCommand
   module Command
     class Transition < Thor
-      default_command :exec
-
       desc 'exec', 'transit issue status'
       option 'issue', aliases: 'i', required: true
       def exec

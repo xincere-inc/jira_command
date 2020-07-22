@@ -4,6 +4,7 @@ require 'optparse'
 require 'pry'
 require_relative '../config'
 require_relative '../jira/list'
+require_relative '../jira/epic'
 require 'tty-prompt'
 require 'base64'
 require 'terminal-table'
@@ -18,7 +19,7 @@ module JiraCommand
         config = JiraCommand::Config.new.read
         list = JiraCommand::Jira::List.new(config)
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary' })
-        show_in_console(config['jira_url'], issues_list['issues'])
+        show_in_console(config[:jira_url], issues_list['issues'])
       end
 
       desc 'unresolved', 'list issues'
@@ -28,7 +29,7 @@ module JiraCommand
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
                                   jql: 'status not in (resolved)' })
 
-        show_in_console(config['jira_url'], issues_list['issues'])
+        show_in_console(config[:jira_url], issues_list['issues'])
       end
 
       desc 'my', 'list your issues'
@@ -44,7 +45,23 @@ module JiraCommand
         issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
                                   jql: jql.join('&') })
 
-        show_in_console(config['jira_url'], issues_list['issues'])
+        show_in_console(config[:jira_url], issues_list['issues'])
+      end
+
+      desc 'without_epic', 'list your issues which has not epic'
+      def without_epic
+        config = JiraCommand::Config.new.read
+        agile_epic = JiraCommand::Jira::Epic.new(config)
+
+        jql = ["key in (#{agile_epic.issue_key_without_epic.join(', ')})"]
+
+        config = JiraCommand::Config.new.read
+        list = JiraCommand::Jira::List.new(config)
+
+        issues_list = list.list({ fields: 'id,key,status,issuetype,assignee,summary',
+                                  jql: jql.join('&') })
+
+        show_in_console(config[:jira_url], issues_list['issues'])
       end
 
       private

@@ -12,9 +12,9 @@ module JiraCommand
       def list
         res = @conn.get(BASE_PATH)
 
-        res = JSON.parse(res.body)
+        body = JSON.parse(res.body)
 
-        res.map { |item| { id: item['id'], name: item['untranslatedName'] } }
+        body.map { |item| { id: item['id'], name: item['untranslatedName'] } }
       end
 
       def transite(issue_key:, target_status_id:)

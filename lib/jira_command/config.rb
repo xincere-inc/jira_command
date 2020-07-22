@@ -16,7 +16,7 @@ module JiraCommand
       end
 
       file = File.read(CONFIG_PATH_CLASS)
-      JSON.parse(file)
+      JSON.parse(file, symbolize_names: true)
     end
 
     def self.check_exist

@@ -6,6 +6,7 @@ require_relative '../config'
 require_relative '../jira/issuetype'
 require_relative '../jira/project'
 require_relative '../jira/user'
+require_relative '../jira/board'
 require 'base64'
 
 module JiraCommand
@@ -58,6 +59,16 @@ module JiraCommand
         jira_issue_type = JiraCommand::Jira::IssueType.new(config)
         config.merge!({
                         issue_types: jira_issue_type.list
+                      })
+        JiraCommand::Config.new.write(config)
+      end
+
+      desc 'update_board', 'update default board in config file'
+      def update_board
+        config = JiraCommand::Config.new.read
+        agile_board = JiraCommand::Jira::Board.new(config)
+        config.merge!({
+                        boards: agile_board.list
                       })
         JiraCommand::Config.new.write(config)
       end

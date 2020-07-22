@@ -17,23 +17,26 @@ module JiraCommand
           issuetype: {
             id: issuetype_id
           },
-          assignee: {
-            id: assignee
-          },
           reporter: {
             id: reporter
           },
           description: description
-        } }.to_json
+        } }
+
+        unless assignee.nil?
+          request_body.merge!(assignee: {
+                                id: assignee
+                              })
+        end
 
         res = @conn.post do |req|
           req.url BASE_PATH
-          req.body = request_body
+          req.body = request_body.to_json
         end
 
         body = JSON.parse(res.body)
 
-        @config['jira_url'] + 'browse/' + body['key']
+        body['key']
       end
     end
   end

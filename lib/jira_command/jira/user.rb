@@ -15,16 +15,14 @@ module JiraCommand
 
       def all_list(project:)
         request_url = BASE_PATH + project
-
         res = @conn.get(request_url)
-
         body = JSON.parse(res.body)
 
         body.map { |item| { name: item['displayName'], account_id: item['accountId'] } }
       end
 
       def show_assignable(project:)
-        puts all_list(project: project).map(:name)
+        puts(all_list(project: project).map { |item| item[:name] })
       end
     end
   end

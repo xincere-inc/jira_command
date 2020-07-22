@@ -10,12 +10,11 @@ module JiraCommand
       default_command :project
 
       desc 'project', 'list issues in specified project'
-      option 'project', aliases: 'p', required: true
-      def project
+      def project(pro)
         config = JiraCommand::Config.new.read
 
         user_api = JiraCommand::Jira::User.new(config)
-        user_api.show_assignable(project: options['project'])
+        user_api.show_assignable(project: pro)
       end
     end
   end

@@ -11,9 +11,9 @@ module JiraCommand
         request_url = "rest/api/2/issue/#{issue_key}/transitions"
         res = @conn.get(request_url)
 
-        res = JSON.parse(res.body)
+        body = JSON.parse(res.body)
 
-        res['transitions'].map { |item| { id: item['id'].to_i, name: item['name'] } }
+        body['transitions'].map { |item| { id: item['id'].to_i, name: item['name'] } }
       end
 
       def transite(issue_key:, target_transition_id:)
