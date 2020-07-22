@@ -19,5 +19,10 @@ module JiraCommand
     register(JiraCommand::Command::Transition, 'transition', 'transition', 'transition issues')
     register(JiraCommand::Command::Issue, 'issue', 'issue', 'create a issue')
     register(JiraCommand::Command::Sprint, 'sprint', 'sprint', 'sprint related features')
+
+    desc 'version', 'show version'
+    def version
+      puts 'You are using: ' + JiraCommand::VERSION
+    end
   end
 end
