@@ -1,7 +1,7 @@
 require 'jira_command'
 require 'thor'
 require 'optparse'
-require 'pry'
+
 require 'pathname'
 require 'fileutils'
 require 'json'

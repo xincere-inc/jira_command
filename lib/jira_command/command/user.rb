@@ -1,6 +1,6 @@
 require 'thor'
 require 'optparse'
-require 'pry'
+
 require_relative '../config'
 require_relative '../jira/user'
 

@@ -1,7 +1,7 @@
 require 'jira_command'
 require 'json'
 require 'faraday'
-require 'pry'
+
 require_relative 'base'
 
 module JiraCommand

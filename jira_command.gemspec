@@ -27,5 +27,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'faraday'
+  spec.add_dependency 'terminal-table'
   spec.add_dependency 'thor'
+  spec.add_dependency 'tty-prompt'
 end

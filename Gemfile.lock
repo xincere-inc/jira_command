@@ -1,8 +1,11 @@
 PATH
   remote: .
   specs:
-    jira_command (0.1.5)
+    jira_command (0.1.6)
+      faraday
+      terminal-table
       thor
+      tty-prompt
 
 GEM
   remote: https://rubygems.org/

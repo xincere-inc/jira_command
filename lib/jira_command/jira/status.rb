@@ -1,5 +1,5 @@
 require 'jira_command'
-require 'pry'
+
 require 'json'
 require 'faraday'
 require_relative 'base'

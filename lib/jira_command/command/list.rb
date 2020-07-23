@@ -1,7 +1,6 @@
 require 'jira_command'
 require 'thor'
 require 'optparse'
-require 'pry'
 require_relative '../config'
 require_relative '../jira/list'
 require_relative '../jira/epic'
