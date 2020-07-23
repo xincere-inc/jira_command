@@ -18,7 +18,7 @@ module JiraCommand
       end
 
       def create(summary:, description:, assignee:, reporter:, project_id:, issuetype_id:)
-        request_body = { fields: {
+        fields = {
           project: {
             id: project_id
           },
@@ -30,17 +30,17 @@ module JiraCommand
             id: reporter
           },
           description: description
-        } }
+        }
 
         unless assignee.nil?
-          request_body.merge!(assignee: {
-                                id: assignee
-                              })
+          fields.merge!(assignee: {
+                          id: assignee
+                        })
         end
 
         res = @conn.post do |req|
           req.url BASE_PATH
-          req.body = request_body.to_json
+          req.body = { fields: fields }.to_json
         end
 
         body = JSON.parse(res.body)
